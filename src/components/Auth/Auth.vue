@@ -20,6 +20,7 @@
       <div class="auth__container">
         <component
           class="auth__form"
+          novalidate
           :is="selectedFormComponent"
           @tabClick="toggleForm($event)"
         ></component>
@@ -51,8 +52,8 @@ export default {
     }
   },
   methods: {
-    toggleForm(name) {
-      if (name) this.selectedForm = name;
+    toggleForm(slug) {
+      if (slug) this.selectedForm = slug;
     }
   }
 };
@@ -78,6 +79,8 @@ export default {
   background: #fff
   transition: $trs-forhims-6
 
+  display: flex
+  flex-direction: column
   width: 504px
   height: 100%
   padding-top: 128px
@@ -183,6 +186,24 @@ export default {
   &:hover
     color: $b
     background: #fff
+
+// Form
+.auth__form
+  position: relative
+  background: #fff
+
+  display: flex
+  flex-grow: 1
+  flex-direction: column
+  padding-bottom: 120px
+  max-height: 100%
+
+  @media (max-width: 1400px)
+    padding-bottom: 88px
+
+  @media (max-width: 600px)
+    padding-bottom: 80px
+
 </style>
 
 
