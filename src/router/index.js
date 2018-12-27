@@ -2,9 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import PageHome from '../components/PageHome.vue';
-import PageCatalog from '../components/PageCatalog.vue';
 import PageProduct from '../components/PageProduct.vue';
 import PagePersonal from '../components/PagePersonal.vue';
+import Catalog from '../components/Catalog.vue';
 
 import AuthGuard from './auth-guard';
 
@@ -20,7 +20,7 @@ export default new Router({
     },
     {
       path: '/catalog',
-      component: PageCatalog
+      component: Catalog
     },
     {
       path: '/catalog/:id',

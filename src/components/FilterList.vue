@@ -8,7 +8,7 @@
           v-for="(product, i) in products"
           :key="i"
           @click="onClick(i)"
-          :class="{active: i === products.indexOf(selected)}"
+          :class="{ active: i === products.indexOf(selected) }"
         >
           <button class="filter__btn">{{ product.text }}</button>
           <span class="filter__num">{{ product.count }}</span>
@@ -77,7 +77,7 @@ export default {
   methods: {
     onClick(i) {
       this.selected = this.products[i];
-      this.$emit("click", this.selected);
+      this.$emit("filter", this.selected);
     },
     initScrollBooster() {
       this.sb = new ScrollBooster({
@@ -106,6 +106,7 @@ export default {
   },
   created() {
     this.selected = this.products[0];
+    this.$emit("filter", this.selected);
   }
 };
 </script>

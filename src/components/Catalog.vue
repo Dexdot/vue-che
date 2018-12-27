@@ -1,0 +1,79 @@
+<template>
+  <div class="catalog">
+    <FilterList @filter="onFilter"></FilterList>
+    <div class="catalog__header">
+      <h2 class="catalog__title">
+        {{ selectedFilter.text }}
+        <span> {{ selectedFilter.count }} </span>
+      </h2>
+    </div>
+  </div>
+</template>
+
+<script>
+import FilterList from "./FilterList";
+
+export default {
+  name: "Catalog",
+  components: {
+    FilterList
+  },
+  data: () => ({
+    products: [],
+    selectedFilter: { text: "", count: 0 }
+  }),
+  methods: {
+    onFilter(selected) {
+      this.selectedFilter = selected;
+    }
+  },
+  created() {
+    this.products = this.$store.getters.products;
+  }
+};
+</script>
+
+<style lang="sass" scoped>
+.catalog
+  overflow-x: hidden
+  padding-left: $container-padding
+  padding-right: 4vw
+
+.catalog__header
+  display: flex
+  flex-direction: row
+  align-items: center
+  justify-content: space-between
+
+  @media (max-width: 800px)
+    padding-top: 8px
+
+.catalog__title
+  color: $b
+  +tt(bold)
+  +ff('font-size', (1280px: 26px, 1440px: 32px, 1920px: 42px, 2550px: 56px))
+  letter-spacing: 0.01em
+
+  position: relative
+
+  @media (max-width: 800px)
+    margin-top: 56px
+    align-self: flex-start
+  @media (max-width: 360px)
+    font-size: 24px
+  
+  span
+    position: absolute
+    top: 0
+    right: 0
+    transform: translate(150%, 20%)
+
+    font-size: 18px
+    letter-spacing: 0.01em
+    color: rgba($b, 0.2)
+
+    @media (max-width: 360px)
+      font-size: 14px
+
+</style>
+

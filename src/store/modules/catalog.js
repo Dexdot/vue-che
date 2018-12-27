@@ -2,7 +2,7 @@ export default {
   state: {
     products: [
       {
-        tags: ['popular', 'hotter'],
+        tags: ['Популярные блюда', 'Горячее'],
         src: 'img/1.png',
         id: 'qw89d7',
         name: 'Стейк из говядины',
@@ -17,7 +17,7 @@ export default {
         carbohydrates: '12'
       },
       {
-        tags: ['grill', 'hotter'],
+        tags: ['Гриль', 'Горячее'],
         src: 'img/2.png',
         id: 'q98qhwd',
         name: 'Плов Чайханский',
@@ -32,7 +32,7 @@ export default {
         carbohydrates: '21'
       },
       {
-        tags: ['baby', 'soup'],
+        tags: ['Детское', 'Супы'],
         src: 'img/3.png',
         id: 'q8wydb9wq8',
         name: 'Китайский суп из утки',
@@ -46,7 +46,7 @@ export default {
         carbohydrates: '26'
       },
       {
-        tags: ['sidedish', 'baby', 'popular'],
+        tags: ['Гарниры', 'Детское', 'Популярные блюда'],
         src: 'img/4.png',
         id: 'hd12qw',
         name: 'Цезарь',
