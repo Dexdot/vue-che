@@ -6,6 +6,9 @@ module.exports = {
     types.forEach(type =>
       addStyleResource(config.module.rule('sass').oneOf(type))
     );
+  },
+  devServer: {
+    disableHostCheck: true
   }
 };
 

@@ -2,14 +2,16 @@
   <div class="header-auth">
     <button
       class="header-auth__btn"
-      @click="onClick"
+      @click="onButtonClick"
+      @mouseover="log"
     >
       <img
         class="header-auth__icon"
         src="./personal.svg"
         alt="Авторизация"
       >
-      <span>Войти</span>
+      <span v-if="isUserLoggedIn">{{ user.name }}</span>
+      <span v-else>Войти</span>
     </button>
   </div>
 </template>
@@ -19,6 +21,27 @@ export default {
   name: "HeaderAuth",
   props: {
     onClick: Function
+  },
+  computed: {
+    user() {
+      return this.$store.getters.user;
+    },
+    isUserLoggedIn() {
+      return this.$store.getters.isUserLoggedIn;
+    }
+  },
+  methods: {
+    log() {
+      // eslint-disable-next-line
+      console.log(this.user);
+    },
+    onButtonClick() {
+      if (this.isUserLoggedIn) {
+        this.$router.push("/personal");
+      } else {
+        this.onClick();
+      }
+    }
   }
 };
 </script>

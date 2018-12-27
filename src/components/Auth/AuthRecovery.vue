@@ -10,6 +10,7 @@
       <button
         class="auth-submit-btn"
         type="submit"
+        :disabled="!validForm"
       >Отправить</button>
     </div>
   </form>
@@ -34,7 +35,9 @@ export default {
   methods: {
     onSubmit() {
       if (this.validForm) {
-        console.log("submit");
+        console.log({
+          email: this.email
+        });
       }
     }
   }
@@ -86,7 +89,8 @@ export default {
   background: $r
   transition: 0.2s ease-out
 
-  &:hover
+  &:hover,
+  &[disabled]
     opacity: 0.8
 
   @media (max-width: 1400px)

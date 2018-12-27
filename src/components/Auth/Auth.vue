@@ -23,6 +23,7 @@
           novalidate
           :is="selectedFormComponent"
           @tabClick="toggleForm($event)"
+          @success="$emit('close')"
         ></component>
       </div>
     </div>

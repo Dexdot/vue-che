@@ -6,10 +6,6 @@
         v-model="name"
       ></el-input>
       <el-input
-        placeholder="Телефон"
-        v-model="phone"
-      ></el-input>
-      <el-input
         type="email"
         placeholder="Почта"
         v-model="email"
@@ -25,34 +21,72 @@
       <button
         class="auth-submit-btn"
         type="submit"
-      >Зарегистрироваться</button>
+        :disabled="!validForm || loading"
+      >
+        <ElementLoading
+          :active="loading"
+          color="#D62323"
+        />
+        Зарегистрироваться</button>
     </div>
   </form>
 </template>
 
 <script>
+import { Notification } from "element-ui";
+
 export default {
   name: "AuthReg",
   data: () => ({
     name: "",
-    phone: "",
     email: "",
     password: ""
   }),
   computed: {
+    loading() {
+      return this.$store.getters.loading;
+    },
     validEmail() {
       const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
       return re.test(String(this.email).toLowerCase());
     },
+    validPassword() {
+      return this.password.length >= 8;
+    },
     validForm() {
-      return this.validEmail && this.name && this.phone && this.password;
+      return this.validEmail && this.validPassword && this.name;
     }
   },
   methods: {
     onSubmit() {
       if (this.validForm) {
-        console.log("submit");
+        const user = {
+          name: this.name,
+          email: this.email,
+          password: this.password
+        };
+
+        this.$store
+          .dispatch("registerUser", user)
+          .then(() => {
+            this.$emit("success");
+
+            Notification.success({
+              title: "Регистрация прошла успешна",
+              message: ""
+            });
+          })
+          .catch(err => {
+            Notification.error({
+              title: "Ошибка",
+              message: this.$store.getters.error,
+              onClick: () => {
+                this.$store.dispatch("clearError");
+                console.log("snack click");
+              }
+            });
+          });
       }
     }
   }
@@ -106,7 +140,8 @@ export default {
   background: $r
   transition: 0.2s ease-out
 
-  &:hover
+  &:hover,
+  &[disabled]
     opacity: 0.8
 
   @media (max-width: 1400px)

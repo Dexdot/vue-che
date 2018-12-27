@@ -19,12 +19,20 @@
       <button
         class="auth-submit-btn"
         type="submit"
-      >Войти</button>
+        :disabled="!validForm || loading"
+      >
+        <ElementLoading
+          :active="loading"
+          color="#D62323"
+        />
+        Войти</button>
     </div>
   </form>
 </template>
 
 <script>
+import { Notification } from "element-ui";
+
 export default {
   name: "AuthLogin",
   data: () => ({
@@ -32,19 +40,48 @@ export default {
     password: ""
   }),
   computed: {
+    loading() {
+      return this.$store.getters.loading;
+    },
+    validPassword() {
+      return this.password.length >= 8;
+    },
     validEmail() {
       const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
       return re.test(String(this.email).toLowerCase());
     },
     validForm() {
-      return this.validEmail && this.password;
+      return this.validEmail && this.validPassword;
     }
   },
   methods: {
     onSubmit() {
       if (this.validForm) {
-        console.log("submit");
+        const user = {
+          email: this.email,
+          password: this.password
+        };
+
+        this.$store
+          .dispatch("loginUser", user)
+          .then(() => {
+            this.$emit("success");
+
+            Notification.success({
+              title: "Вы авторизованы",
+              message: ""
+            });
+          })
+          .catch(err => {
+            Notification.error({
+              title: "Ошибка",
+              message: this.$store.getters.error,
+              onClose: () => {
+                this.$store.dispatch("clearError");
+              }
+            });
+          });
       }
     }
   }
@@ -96,7 +133,8 @@ export default {
   background: $r
   transition: 0.2s ease-out
 
-  &:hover
+  &:hover,
+  &[disabled]
     opacity: 0.8
 
   @media (max-width: 1400px)
