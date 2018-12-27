@@ -3,7 +3,6 @@
     <button
       class="header-auth__btn"
       @click="onButtonClick"
-      @mouseover="log"
     >
       <img
         class="header-auth__icon"
@@ -31,10 +30,6 @@ export default {
     }
   },
   methods: {
-    log() {
-      // eslint-disable-next-line
-      console.log(this.user);
-    },
     onButtonClick() {
       if (this.isUserLoggedIn) {
         this.$router.push("/personal");
