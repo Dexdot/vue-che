@@ -5,13 +5,13 @@
       </div>
       <ul class="filter__list">
         <li
-          v-for="(product, i) in products"
+          v-for="(listItem, i) in list"
           :key="i"
           @click="onClick(i)"
-          :class="{ active: i === products.indexOf(selected) }"
+          :class="{ active: i === list.indexOf(selected) }"
         >
-          <button class="filter__btn">{{ product.text }}</button>
-          <span class="filter__num">{{ product.count }}</span>
+          <button class="filter__btn">{{ listItem.text }}</button>
+          <span class="filter__num">{{ listItem.count }}</span>
         </li>
       </ul>
     </div>
@@ -35,20 +35,12 @@ export default {
     }
   }),
   computed: {
-    products() {
-      const { products } = this.$store.getters;
-      const filtered = [];
-
-      // Собираем все теги без повторений
-      products.forEach(product => {
-        product.tags.forEach(tag => {
-          if (filtered.indexOf(tag) === -1) filtered.push(tag);
-        });
-      });
-
+    list() {
       // Считаем кол-во товаров с определенным тегом
       // Например: 4 популярных, 2 супа, 3 снэка
-      const list = filtered.map(tag => {
+      const { products, tags } = this.$store.getters;
+
+      const list = tags.map(tag => {
         let count = 0;
 
         products.forEach(product => {
@@ -76,7 +68,7 @@ export default {
   },
   methods: {
     onClick(i) {
-      this.selected = this.products[i];
+      this.selected = this.list[i];
       this.$emit("filter", this.selected);
     },
     initScrollBooster() {
@@ -105,7 +97,10 @@ export default {
     this.initScrollBooster();
   },
   created() {
-    this.selected = this.products[0];
+    // Задаем первый элемент списка как активный
+    this.selected = this.list[0];
+
+    // Эмитим это событие
     this.$emit("filter", this.selected);
   }
 };

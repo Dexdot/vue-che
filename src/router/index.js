@@ -4,7 +4,7 @@ import Router from 'vue-router';
 import PageHome from '../components/PageHome.vue';
 import PageProduct from '../components/PageProduct.vue';
 import PagePersonal from '../components/PagePersonal.vue';
-import Catalog from '../components/Catalog.vue';
+import Catalog from '../components/Catalog/Catalog.vue';
 
 import AuthGuard from './auth-guard';
 

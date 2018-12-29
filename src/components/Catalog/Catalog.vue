@@ -6,21 +6,50 @@
         {{ selectedFilter.text }}
         <span> {{ selectedFilter.count }} </span>
       </h2>
+      <ElSelect
+        v-model="filter"
+        placeholder="По цене"
+      >
+        <ElOption
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+        </ElOption>
+      </ElSelect>
     </div>
+    <CatalogList></CatalogList>
   </div>
 </template>
 
 <script>
-import FilterList from "./FilterList";
+import CatalogList from "./CatalogList";
+import FilterList from "../FilterList";
+import { Select, Option } from "element-ui";
 
 export default {
   name: "Catalog",
   components: {
-    FilterList
+    ElSelect: Select,
+    ElOption: Option,
+    FilterList,
+    CatalogList
   },
   data: () => ({
     products: [],
-    selectedFilter: { text: "", count: 0 }
+    selectedFilter: { text: "", count: 0 },
+    filter: "",
+    options: [
+      {
+        label: "По возрастанию",
+        value: "asc"
+      },
+      {
+        label: "По убыванию",
+        value: "desc"
+      }
+    ]
   }),
   methods: {
     onFilter(selected) {

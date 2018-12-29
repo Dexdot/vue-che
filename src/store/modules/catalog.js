@@ -3,7 +3,7 @@ export default {
     products: [
       {
         tags: ['Популярные блюда', 'Горячее'],
-        src: 'img/1.png',
+        src: 'https://now-images.now.sh/1.png',
         id: 'qw89d7',
         name: 'Стейк из говядины',
         weight: '250',
@@ -18,7 +18,7 @@ export default {
       },
       {
         tags: ['Гриль', 'Горячее'],
-        src: 'img/2.png',
+        src: 'https://now-images.now.sh/2.png',
         id: 'q98qhwd',
         name: 'Плов Чайханский',
         weight: '250',
@@ -33,7 +33,7 @@ export default {
       },
       {
         tags: ['Детское', 'Супы'],
-        src: 'img/3.png',
+        src: 'https://now-images.now.sh/3.png',
         id: 'q8wydb9wq8',
         name: 'Китайский суп из утки',
         weight: '250',
@@ -47,7 +47,7 @@ export default {
       },
       {
         tags: ['Гарниры', 'Детское', 'Популярные блюда'],
-        src: 'img/4.png',
+        src: 'https://now-images.now.sh/4.png',
         id: 'hd12qw',
         name: 'Цезарь',
         weight: '480',
@@ -63,7 +63,20 @@ export default {
     ]
   },
   getters: {
-    products: state => state.products
+    products: state => state.products,
+    tags: state => {
+      const { products } = state;
+      const filtered = [];
+
+      // Собираем все теги без повторений
+      products.forEach(product => {
+        product.tags.forEach(tag => {
+          if (filtered.indexOf(tag) === -1) filtered.push(tag);
+        });
+      });
+
+      return filtered;
+    }
   },
   mutations: {},
   actions: {}
