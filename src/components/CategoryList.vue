@@ -22,7 +22,7 @@
 import ScrollBooster from "scrollbooster";
 
 export default {
-  name: "FilterList",
+  name: "CategoryList",
   data: () => ({
     selected: null,
     x: 0,
@@ -69,7 +69,7 @@ export default {
   methods: {
     onClick(i) {
       this.selected = this.list[i];
-      this.$emit("filter", this.selected);
+      this.$emit("change", this.selected);
     },
     initScrollBooster() {
       this.sb = new ScrollBooster({
@@ -101,7 +101,7 @@ export default {
     this.selected = this.list[0];
 
     // Эмитим это событие
-    this.$emit("filter", this.selected);
+    this.$emit("change", this.selected);
   }
 };
 </script>

@@ -18,11 +18,30 @@ export default {
   components: {
     ProductCard
   },
-  data: () => ({
-    products: []
-  }),
-  created() {
-    this.products = this.$store.getters.products;
+  props: {
+    category: Object,
+    filter: String
+  },
+  computed: {
+    currentCategory() {
+      const { products } = this.$store.getters;
+
+      return products.filter(
+        product => product.tags.indexOf(this.category.text) !== -1
+      );
+    },
+    sorted() {
+      if (!this.filter) return this.currentCategory;
+
+      if (this.filter === "asc") {
+        return this.currentCategory.sort((a, b) => a.price - b.price);
+      } else if (this.filter === "desc") {
+        return this.currentCategory.sort((a, b) => b.price - a.price);
+      }
+    },
+    products() {
+      return this.sorted;
+    }
   }
 };
 </script>

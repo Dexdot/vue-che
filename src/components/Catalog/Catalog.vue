@@ -1,10 +1,10 @@
 <template>
   <div class="catalog">
-    <FilterList @filter="onFilter"></FilterList>
+    <CategoryList @change="onCategoryChange"></CategoryList>
     <div class="catalog__header">
       <h2 class="catalog__title">
-        {{ selectedFilter.text }}
-        <span> {{ selectedFilter.count }} </span>
+        {{ category.text }}
+        <span> {{ category.count }} </span>
       </h2>
       <ElSelect
         v-model="filter"
@@ -19,13 +19,16 @@
         </ElOption>
       </ElSelect>
     </div>
-    <CatalogList></CatalogList>
+    <CatalogList
+      :category="category"
+      :filter="filter"
+    ></CatalogList>
   </div>
 </template>
 
 <script>
 import CatalogList from "./CatalogList";
-import FilterList from "../FilterList";
+import CategoryList from "../CategoryList";
 import { Select, Option } from "element-ui";
 
 export default {
@@ -33,13 +36,13 @@ export default {
   components: {
     ElSelect: Select,
     ElOption: Option,
-    FilterList,
+    CategoryList,
     CatalogList
   },
   data: () => ({
     products: [],
-    selectedFilter: { text: "", count: 0 },
-    filter: "",
+    category: { text: "", count: 0 },
+    filter: "asc",
     options: [
       {
         label: "По возрастанию",
@@ -52,8 +55,8 @@ export default {
     ]
   }),
   methods: {
-    onFilter(selected) {
-      this.selectedFilter = selected;
+    onCategoryChange(selected) {
+      this.category = selected;
     }
   },
   created() {
