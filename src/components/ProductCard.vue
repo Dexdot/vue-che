@@ -32,8 +32,9 @@
     <div class="product__info">
       <p class="product__text"> {{ product.composition }} </p>
       <router-link
+        exact
         class="product__link"
-        :to="{ name: 'catalog', params: { id: product.id } }"
+        :to="{ name: 'catalog', params: { id: product.id }}"
       >подробнее</router-link>
     </div>
   </div>

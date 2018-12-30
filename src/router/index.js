@@ -24,6 +24,7 @@ export default new Router({
     },
     {
       path: '/catalog/:id',
+      name: 'catalog',
       component: PageProduct
     },
     {
