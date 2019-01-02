@@ -1,5 +1,5 @@
 <template>
-  <div class="cart__content cart__content--empty">
+  <div>
     <div class="cart__map-wrap">
       <button
         class="cart__close"
@@ -213,21 +213,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.cart
-  &__content
-    margin-top: 73px
-    padding-top: 32px
-
-    @media (max-width: 800px)
-      margin-top: 89px
-    @media (max-width: 500px)
-      margin-top: 0
-
-    &--empty
-      color: #fff
-      text-align: center
-      padding-top: 0
-  
+.cart  
   &__close
     width: 80px
     height: 80px
@@ -246,7 +232,6 @@ export default {
       display: flex
 
     img
-      stroke: #fff
       width: 20px
       height: 20px
 

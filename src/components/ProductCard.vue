@@ -15,7 +15,7 @@
         class="product__btn product__btn--plus"
       >+</button>
     </div>
-    <button>
+    <button @click="onClick">
       <div
         class="product__img"
         :style="{ backgroundImage: `url(${product.src})` }"
@@ -51,7 +51,20 @@ export default {
   },
   data: () => ({
     amount: 1
-  })
+  }),
+  methods: {
+    onClick() {
+      const { cartItems } = this.$store.getters;
+      const notInCart = cartItems.every(item => item.id !== this.product.id);
+
+      if (notInCart) {
+        this.$store.dispatch("addToCart", {
+          ...this.product,
+          amount: this.amount
+        });
+      }
+    }
+  }
 };
 </script>
 
@@ -118,6 +131,7 @@ export default {
     padding-bottom: 24px
 
   &__name
+    text-align: left
     color: $b
     +tt(bold)
     font-size: 16px

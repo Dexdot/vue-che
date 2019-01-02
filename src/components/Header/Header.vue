@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="header">
+    <nav :class="['header', { hidden: this.scroll.direction === 1 }]">
       <ul class="header__list">
         <li
           v-for="link in links"
@@ -52,7 +52,12 @@ export default {
       { path: "/about", text: "О нас" },
       { path: "/blog", text: "Новости" },
       { path: "/contacts", text: "Контакты" }
-    ]
+    ],
+    header: null,
+    scroll: {
+      last: 0,
+      direction: 0
+    }
   }),
   methods: {
     showAuth() {
@@ -60,7 +65,22 @@ export default {
     },
     hideAuth() {
       this.isAuthVisible = false;
+    },
+    onScroll() {
+      const windowScrollTop = window.pageYOffset;
+
+      if (windowScrollTop > this.scroll.last) {
+        this.scroll.direction = 1;
+      } else {
+        this.scroll.direction = -1;
+      }
+
+      this.scroll.last = windowScrollTop;
     }
+  },
+  mounted() {
+    this.header = this.$el.querySelector(".header");
+    window.addEventListener("scroll", this.onScroll.bind(this));
   }
 };
 </script>
@@ -72,11 +92,15 @@ export default {
   padding: 8px 0
 
   z-index: 3
-  position: sticky
+  position: fixed
   top: 0
 
   background: #fff
   border-bottom: 1px solid rgba(#E8EAED, 0.68)
+  transition: 0.2s ease-out
+
+  &.hidden
+    transform: translateY(-105%)
 
 .header__list
   display: flex

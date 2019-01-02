@@ -4,11 +4,10 @@ export default {
   },
   getters: {
     cartItems: state => state.cartItems,
-    amount: state => state.cartItems.length,
     total: state => {
       let sum = 0;
 
-      state.cartItems.forEach(({ price }) => (sum += price));
+      state.cartItems.forEach(({ price, amount }) => (sum += price * amount));
 
       return sum;
     }
@@ -16,9 +15,16 @@ export default {
   mutations: {
     addToCart: (state, payload) => state.cartItems.push(payload),
     removeFromCart: (state, id) => {
-      state.cartItems.filter(product => product.id !== id);
+      state.cartItems = state.cartItems.filter(product => product.id !== id);
     },
-    clearCart: state => (state.cartItems = [])
+    clearCart: state => (state.cartItems = []),
+    setAmount: (state, { id, amount }) => {
+      state.cartItems.forEach(product => {
+        if (product.id === id) {
+          product.amount = amount;
+        }
+      });
+    }
   },
   actions: {
     addToCart({ commit }, { id, name, weight, amount, price }) {
@@ -34,6 +40,12 @@ export default {
     },
     removeFromCart({ commit }, id) {
       commit('removeFromCart', id);
+    },
+    clearCart({ commit }) {
+      commit('clearCart');
+    },
+    changeProductAmount({ commit }, payload) {
+      commit('setAmount', payload);
     }
   }
 };
