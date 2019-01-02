@@ -34,7 +34,7 @@
       <router-link
         exact
         class="product__link"
-        :to="{ name: 'catalog', params: { id: product.id }}"
+        :to="{ name: 'catalog', params: { id: product.id, amount }}"
       >подробнее</router-link>
     </div>
   </div>

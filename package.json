@@ -9,6 +9,7 @@
   "dependencies": {
     "element-ui": "^2.4.11",
     "firebase": "^5.7.1",
+    "gsap": "^2.0.2",
     "scrollbooster": "^1.1.0",
     "vue": "^2.5.17",
     "vue-element-loading": "^1.0.5",
