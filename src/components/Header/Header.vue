@@ -71,6 +71,7 @@ export default {
   height: 72px
   padding: 8px 0
 
+  z-index: 3
   position: sticky
   top: 0
 

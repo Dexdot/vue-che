@@ -1,34 +1,40 @@
 <template>
-  <div class="catalog">
-    <CategoryList @change="onCategoryChange"></CategoryList>
-    <div class="catalog__header">
-      <h2 class="catalog__title">
-        {{ category.text }}
-        <span> {{ category.count }} </span>
-      </h2>
-      <ElSelect
-        v-model="filter"
-        placeholder="По цене"
-      >
-        <ElOption
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+  <div class="catalog-container">
+    <div class="catalog">
+      <Cart />
+      <CategoryList @change="onCategoryChange"></CategoryList>
+      <div class="catalog__header">
+        <h2 class="catalog__title">
+          {{ category.text }}
+          <span> {{ category.count }} </span>
+        </h2>
+        <ElSelect
+          v-model="filter"
+          placeholder="По цене"
         >
-        </ElOption>
-      </ElSelect>
+          <ElOption
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </ElOption>
+        </ElSelect>
+      </div>
+      <CatalogList
+        :category="category"
+        :filter="filter"
+      ></CatalogList>
     </div>
-    <CatalogList
-      :category="category"
-      :filter="filter"
-    ></CatalogList>
   </div>
 </template>
 
 <script>
+import Cart from "../Cart/Cart";
+
 import CatalogList from "./CatalogList";
 import CategoryList from "../CategoryList";
+
 import { Select, Option } from "element-ui";
 
 export default {
@@ -37,12 +43,13 @@ export default {
     ElSelect: Select,
     ElOption: Option,
     CategoryList,
-    CatalogList
+    CatalogList,
+    Cart
   },
   data: () => ({
     products: [],
     category: { text: "", count: 0 },
-    filter: "asc",
+    filter: "",
     options: [
       {
         label: "По возрастанию",
@@ -66,10 +73,24 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.catalog-container
+  padding-right: 326px
+
+  @media (min-width: 2200px)
+    padding-right: 400px
+  @media (max-width: 1100px)
+    padding-right: 0
+
 .catalog
   overflow-x: hidden
   padding-left: $container-padding
+  
   padding-right: 4vw
+  @media (max-width: 1100px)
+    padding-right: $container-padding
+  @media (max-width: 800px)
+    padding-left: $container-padding-mob
+    padding-right: $container-padding-mob
 
 .catalog__header
   display: flex
