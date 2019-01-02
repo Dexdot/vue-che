@@ -1,104 +1,218 @@
 <template>
-  <div class="product">
-    <div class="product__overlay"></div>
+  <transition
+    @beforeEnter="beforeEnter"
+    @enter="enter"
+    :css="false"
+    @leave="leave"
+  >
+    <div class="product">
+      <div class="product__overlay"></div>
 
-    <div class="product__inner">
-      <div class="product__img-wrap">
-        <div
-          class="product__img"
-          :style="{ backgroundImage: `url(${product.src})` }"
-        ></div>
-      </div>
-
-      <!-- product__container -->
-      <div class="product__container">
-        <a
-          class="product__close"
-          @click="$router.go(-1)"
-        >
-          <img
-            src="./Cart/close.svg"
-            alt="Закрыть"
-          >
-        </a>
-
-        <!-- product__content -->
-        <div class="product__content">
-          <div class="product__head">
-            <h2 class="product__title">{{ product.name }}</h2>
-            <span class="product__weight">{{ product.weight }}</span>
-          </div>
-
-          <template v-if="product.description">
-            <small class="product__label">Описание</small>
-            <p class="product__text product__text--description">
-              {{ product.description }}
-            </p>
-          </template>
-
-          <template v-if="product.composition">
-            <small class="product__label">Состав</small>
-            <p class="product__text product__text--composition">
-              {{ product.composition }}
-            </p>
-          </template>
-
-          <small class="product__label">Пищевая ценность</small>
-
-          <ul class="product__table">
-            <li class="product__col">
-              <b>{{ product.calories }}</b> <small>ккал</small>
-            </li>
-            <li class="product__col">
-              <b>{{ product.squirrels }}</b> <small>белки</small>
-            </li>
-            <li class="product__col">
-              <b>{{ product.fats }}</b> <small>жиры</small>
-            </li>
-            <li class="product__col">
-              <b>{{ product.carbohydrates }}</b> <small>углеводы</small>
-            </li>
-          </ul>
+      <div class="product__inner">
+        <div class="product__img-wrap">
+          <div
+            class="product__img"
+            :style="{ backgroundImage: `url(${product.src})` }"
+          ></div>
         </div>
-        <!-- ./product__content -->
+
+        <!-- product__container -->
+        <div class="product__container">
+          <a
+            class="product__close"
+            @click="$router.go(-1)"
+          >
+            <img
+              src="./Cart/close.svg"
+              alt="Закрыть"
+            >
+          </a>
+
+          <!-- product__content -->
+          <div class="product__content">
+            <div class="product__head">
+              <h2 class="product__title">{{ product.name }}</h2>
+              <span class="product__weight">{{ product.weight }}</span>
+            </div>
+
+            <template v-if="product.description">
+              <small class="product__label">Описание</small>
+              <p class="product__text product__text--description">
+                {{ product.description }}
+              </p>
+            </template>
+
+            <template v-if="product.composition">
+              <small class="product__label">Состав</small>
+              <p class="product__text product__text--composition">
+                {{ product.composition }}
+              </p>
+            </template>
+
+            <small class="product__label">Пищевая ценность</small>
+
+            <ul class="product__table">
+              <li class="product__col">
+                <b>{{ product.calories }}</b> <small>ккал</small>
+              </li>
+              <li class="product__col">
+                <b>{{ product.squirrels }}</b> <small>белки</small>
+              </li>
+              <li class="product__col">
+                <b>{{ product.fats }}</b> <small>жиры</small>
+              </li>
+              <li class="product__col">
+                <b>{{ product.carbohydrates }}</b> <small>углеводы</small>
+              </li>
+            </ul>
+          </div>
+          <!-- ./product__content -->
+        </div>
+        <!-- ./product__container -->
       </div>
-      <!-- ./product__container -->
+
+      <form class="product__banner">
+        <div class="product__amount">
+          <button
+            class="product__amount-btn"
+            type="button"
+            @click="amount++"
+          >
+            +
+          </button>
+          <span>{{ amount }}</span>
+          <button
+            class="product__amount-btn"
+            type="button"
+            @click="amount > 1 && amount--"
+          >
+            -
+          </button>
+        </div>
+
+        <div class="product__banner-text">
+          <span>{{ product.price }}</span>
+          <button type="submit">Добавить</button>
+        </div>
+      </form>
     </div>
-
-    <form class="product__banner">
-      <div class="product__amount">
-        <button
-          class="product__amount-btn"
-          type="button"
-          @click="amount++"
-        >
-          +
-        </button>
-        <span>{{ amount }}</span>
-        <button
-          class="product__amount-btn"
-          type="button"
-          @click="amount > 1 && amount--"
-        >
-          -
-        </button>
-      </div>
-
-      <div class="product__banner-text">
-        <span>{{ product.price }}</span>
-        <button type="submit">Добавить</button>
-      </div>
-    </form>
-  </div>
+  </transition>
 </template>
 
 <script>
+import { TweenMax, TimelineMax, Power2 } from "gsap";
+
 export default {
   name: "PageProduct",
   data: () => ({
     amount: 1,
     product: {}
   }),
+  methods: {
+    beforeEnter(el) {
+      document.querySelector(".header").classList.remove("hidden");
+
+      TweenMax.set(
+        [
+          ...el.querySelectorAll(
+            ".product__amount, .product__banner-text, .product__overlay"
+          )
+        ],
+        { opacity: 0 }
+      );
+
+      TweenMax.set(el.querySelector(".product__img"), {
+        opacity: 0,
+        scale: 1.03,
+        y: "20%",
+        transformOrigin: "50% 50%"
+      });
+
+      TweenMax.set(
+        [
+          ...el.querySelectorAll(
+            ".product__close, .product__head, .product__text, .product__label, .product__table"
+          )
+        ],
+        { opacity: 0, y: "40px" }
+      );
+
+      TweenMax.set(
+        [...el.querySelectorAll(".product__inner, .product__banner")],
+        { y: "100%" }
+      );
+    },
+    enter(el, done) {
+      const inner = el.querySelectorAll(".product__inner");
+      const overlay = el.querySelectorAll(".product__overlay");
+      const img = el.querySelectorAll(".product__img");
+      const stagger = el.querySelectorAll(
+        ".product__close, .product__head, .product__label, .product__text, .product__table"
+      );
+      const banner = el.querySelectorAll(".product__banner");
+      const bannerInner = el.querySelectorAll(
+        ".product__amount, .product__banner-text"
+      );
+
+      const tl = new TimelineMax({
+        onComplete: done
+      });
+
+      const ease = Power2.easeInOut;
+
+      tl.fromTo(inner, 0.6, { y: "100%" }, { y: "0%", ease })
+        .fromTo(overlay, 0.4, { opacity: 0 }, { opacity: 0.2 }, "-=0.3")
+        .fromTo(
+          img,
+          0.6,
+          { opacity: 0, scale: 1.03, y: "20%" },
+          { opacity: 1, scale: 1, y: "0%" },
+          "-=0.2"
+        )
+        .staggerFromTo(
+          stagger,
+          0.6,
+          { opacity: 0, y: "40px" },
+          { opacity: 1, y: "0%" },
+          0.05,
+          "-=0.6"
+        )
+        .fromTo(banner, 0.6, { y: "100%" }, { y: "0%", ease }, "-=0.8")
+        .staggerFromTo(
+          bannerInner,
+          0.4,
+          { opacity: 0, ease },
+          { opacity: 1, ease },
+          0.03,
+          "-=0.4"
+        );
+    },
+    leave(el, done) {
+      const inner = el.querySelectorAll(".product__inner");
+      const overlay = el.querySelectorAll(".product__overlay");
+      const img = el.querySelectorAll(".product__img");
+      const stagger = el.querySelectorAll(
+        ".product__close, .product__head, .product__label, .product__text, .product__table"
+      );
+      const banner = el.querySelectorAll(".product__banner");
+      const bannerInner = el.querySelectorAll(
+        ".product__amount, .product__banner-text"
+      );
+
+      const tl = new TimelineMax({
+        onComplete: done
+      });
+
+      const ease = Power2.easeInOut;
+
+      tl.to(bannerInner, 0.2, { opacity: 0, ease })
+        .to(banner, 0.4, { y: "100%", ease })
+        .staggerTo(stagger, 0.4, { opacity: 0, y: "-40px" }, 0.05, "-=0.6")
+        .to(img, 0.2, { opacity: 0, y: "20%", scale: 1.03 }, "-=0.6")
+        .to(overlay, 0.2, { opacity: 0 }, "-=0.8")
+        .to(inner, 0.4, { y: "100%", ease }, "-=0.4");
+    }
+  },
   created() {
     const { id, amount } = this.$route.params;
 
@@ -118,6 +232,7 @@ export default {
 <style lang="sass" scoped>
 .product
   position: fixed
+  z-index: 3
   top: 73px
   left: 0
 

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "deploy": "yarn build && cd dist && now && now alias che",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },
